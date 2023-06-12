@@ -1,11 +1,9 @@
-"use client";
+'use client'
 
-import { useSession } from "next-auth/react";
+import { useSession } from 'next-auth/react'
 
 export const User = () => {
-	const { data: session } = useSession();
-
-	return <pre>{JSON.stringify(session)}</pre>;
-};
-
-export { useSession };
+  const { data: session } = useSession()
+  console.log('Client Session', session)
+  return <pre>{JSON.stringify(session)}</pre>
+}
