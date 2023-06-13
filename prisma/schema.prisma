@@ -12,10 +12,17 @@ datasource db {
   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
+enum UserRole {
+  ADMIN
+  STAFF
+  CUSTOMER
+}
 
 model User {
   id Int @id @default(autoincrement())
   email String @unique
   password String
   name String?
+
+  role UserRole @default(CUSTOMER)
 }

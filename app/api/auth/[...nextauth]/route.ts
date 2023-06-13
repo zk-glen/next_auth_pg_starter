@@ -1,7 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { compare } from "bcrypt";
-import NextAuth, { type NextAuthOptions } from "next-auth";
+import NextAuth, { Session, type NextAuthOptions } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+if (!process.env.NEXTAUTH_SECRET) {
+	throw new Error(
+		"please provide process.env.NEXTAUTH_SECRET environment variable"
+	);
+}
 
 export const authOptions: NextAuthOptions = {
 	pages: {
@@ -22,9 +29,7 @@ export const authOptions: NextAuthOptions = {
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials) {
-				if (!credentials?.email || !credentials.password) {
-					return null;
-				}
+				if (!credentials?.email || !credentials.password) return null;
 
 				const user = await prisma.user.findUnique({
 					where: {
@@ -32,50 +37,48 @@ export const authOptions: NextAuthOptions = {
 					},
 				});
 
-				if (!user) {
-					return null;
-				}
+				if (!user) return null;
 
 				const isPasswordValid = await compare(
 					credentials.password,
 					user.password
 				);
 
-				if (!isPasswordValid) {
-					return null;
-				}
+				if (!isPasswordValid) return null;
 
-				return {
+				let DBUSer = {
 					id: user.id + "",
 					email: user.email,
 					name: user.name,
-					randomKey: "Hey cool",
+					role: user.role,
 				};
+
+				return DBUSer;
 			},
 		}),
 	],
 	callbacks: {
-		session: ({ session, token }) => {
-			// console.log("Session Callback", { session, token });
+		session: ({ token, session }) => {
+			console.log(session, "SESSION TOKEN CALL");
 			return {
 				...session,
 				user: {
 					...session.user,
 					id: token.id,
-					randomKey: token.randomKey,
+					role: token.role,
 				},
 			};
 		},
 		jwt: ({ token, user }) => {
-			// console.log("JWT Callback", { token, user });
 			if (user) {
 				const u = user as unknown as any;
 				return {
 					...token,
 					id: u.id,
-					randomKey: u.randomKey,
+					role: u.role,
 				};
 			}
+
 			return token;
 		},
 	},
