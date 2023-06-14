@@ -46,20 +46,19 @@ export const authOptions: NextAuthOptions = {
 
 				if (!isPasswordValid) return null;
 
-				let DBUSer = {
+				//  If passes authorisation then returns object with relevant info
+				return {
 					id: user.id + "",
 					email: user.email,
 					name: user.name,
 					role: user.role,
 				};
-
-				return DBUSer;
 			},
 		}),
 	],
 	callbacks: {
+		//  JWT token contains id and role date and put it into session here
 		session: ({ token, session }) => {
-			console.log(session, "SESSION TOKEN CALL");
 			return {
 				...session,
 				user: {
@@ -69,6 +68,7 @@ export const authOptions: NextAuthOptions = {
 				},
 			};
 		},
+		//  session lacks the id and role so add using jwt
 		jwt: ({ token, user }) => {
 			if (user) {
 				const u = user as unknown as any;

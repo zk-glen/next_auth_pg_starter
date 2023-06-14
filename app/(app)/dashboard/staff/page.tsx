@@ -8,5 +8,12 @@ export default async function StaffDashboard() {
 		return <div>NOT AN ADMIN or STAFF</div>;
 	}
 
-	return <>STAFF Dashboard</>;
+	return (
+		<ul className="flex flex-col">
+			<li>View Appointments</li>
+			<li>Set Days off</li>
+			<li>View Past Appointments</li>
+			<li>Settings</li>
+		</ul>
+	);
 }

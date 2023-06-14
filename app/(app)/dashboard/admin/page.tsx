@@ -6,5 +6,11 @@ export default async function AdminDashboard() {
 	if (session?.user.role !== "ADMIN") {
 		return <div>NOT AN ADMIN</div>;
 	}
-	return <>Admin Dashboard</>;
+	return (
+		<ul className="flex flex-col">
+			<li>Set staff</li>
+			<li>Metrics</li>
+			<li>Settings</li>
+		</ul>
+	);
 }

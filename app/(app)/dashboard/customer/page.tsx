@@ -7,5 +7,12 @@ export default async function CustomerDashboard() {
 		return <div>NOT AN ADMIN or CUSTOMER</div>;
 	}
 
-	return <>Customer Dashboard</>;
+	return (
+		<ul className="flex flex-col">
+			<li>Upcoming appointments</li>
+			<li>Past appointments</li>
+			<li>Leave feedback</li>
+			<li>Settings</li>
+		</ul>
+	);
 }
