@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { compare } from "bcrypt";
-import NextAuth, { Session, type NextAuthOptions } from "next-auth";
-import { JWT } from "next-auth/jwt";
+import NextAuth, { type NextAuthOptions } from "next-auth";
+// import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 if (!process.env.NEXTAUTH_SECRET) {
@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
 					},
 				});
 
-				if (!user) return null;
+				if (!user) return null; //  No email found in db
 
 				const isPasswordValid = await compare(
 					credentials.password,
@@ -58,6 +58,7 @@ export const authOptions: NextAuthOptions = {
 	],
 	callbacks: {
 		//  JWT token contains id and role date and put it into session here
+		// The session callback is responsible for enriching the session object with additional data from the JWT token
 		session: ({ token, session }) => {
 			return {
 				...session,
@@ -78,7 +79,6 @@ export const authOptions: NextAuthOptions = {
 					role: u.role,
 				};
 			}
-
 			return token;
 		},
 	},
