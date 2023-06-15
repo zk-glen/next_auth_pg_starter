@@ -38,6 +38,9 @@ export const authOptions: NextAuthOptions = {
 				});
 
 				if (!user) return null; //  No email found in db
+				if (!user.active) {
+					throw new Error("User not activated"); //Just says email or passsword wrong no that they're not active
+				}
 
 				const isPasswordValid = await compare(
 					credentials.password,

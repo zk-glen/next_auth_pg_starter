@@ -25,7 +25,7 @@ model User {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   role            UserRole @default(CUSTOMER)
-  ActivationToken ActivationToken[]
+  activationTokens ActivationToken[]
 }
 
 model ActivationToken {

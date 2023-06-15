@@ -8,7 +8,7 @@ export default async function AdminDashboard() {
 	}
 	return (
 		<ul className="flex flex-col">
-			<li>Set staff</li>
+			<li>List all emails and Set role</li>
 			<li>Metrics</li>
 			<li>Settings</li>
 		</ul>
