@@ -15,7 +15,7 @@ export async function GET(
 	//  Find use in db that is not active yet, and is created less than 24 hours ago
 	const user = await prisma.user.findFirst({
 		where: {
-			ActivationToken: {
+			activationTokens: {
 				some: {
 					AND: [
 						{
