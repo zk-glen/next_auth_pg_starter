@@ -19,9 +19,19 @@ model User {
   updatedAt        DateTime          @updatedAt
   role             UserRole          @default(CUSTOMER)
   activationTokens ActivationToken[]
+  resetTokens      ResetToken[]
 }
 
 model ActivationToken {
+  id          Int       @id @default(autoincrement())
+  token       String    @unique
+  activatedAt DateTime?
+  createdAt   DateTime  @default(now())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model ResetToken {
   id          Int       @id @default(autoincrement())
   token       String    @unique
   activatedAt DateTime?

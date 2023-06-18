@@ -1,0 +1,17 @@
+Forgotten Password
+
+Add button to reset
+
+Goto form to input email
+
+Check if email exists
+
+Message that if they exist then to check email
+
+Send reset email
+
+Click email link and go to new email page
+
+Enter new email
+
+Update Email and redirect to login page
