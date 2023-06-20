@@ -97,3 +97,23 @@ export const RegisterForm = () => {
 		</div>
 	);
 };
+
+// Todo
+// <Layout>
+// 	<Template>
+// 		<ErrorBoundary fallback={<Error/>}>
+// 			<Suspense fallback={<Loading/>}>
+// 				<ErrorBoundary fallback={<NotFound/>}>
+// 					<Page/>
+// 				</ErrorBoundary>
+// 			</Suspense>
+// 		</ErrorBoundary>
+// 	</Template>
+// </Layout>
+
+// fully understand api directory
+
+// Move activate to auth folder and share layout
+//  Add advanced Typescript
+
+//  use layout unless specific reason for template
