@@ -12,7 +12,7 @@ export const Form = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const callbackUrl =
-		(searchParams && searchParams.get("callbackUrl")) || "/dashboard";
+		(searchParams && searchParams.get("callbackUrl")) || "/";
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
