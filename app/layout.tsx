@@ -1,6 +1,8 @@
 import "./globals.css";
-
+import { Providers } from "@/app/providers";
 import Header from "@/components/header";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 export const metadata = {
 	title: "Create Next App",
@@ -12,12 +14,16 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
+	const session = await getServerSession(authOptions);
+
 	return (
 		<html lang="en">
-			<body>
-				<Header />
-				<main>{children}</main>
-			</body>
+			<Providers>
+				<body>
+					<Header session={session} />
+					<main>{children}</main>
+				</body>
+			</Providers>
 		</html>
 	);
 }

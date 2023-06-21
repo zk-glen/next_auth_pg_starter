@@ -10,53 +10,61 @@ import {
 import { PersonIcon } from "@radix-ui/react-icons";
 import { UserRole } from "@prisma/client";
 import { LoginButton, LogoutButton } from "../loginout";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getServerSession, Session } from "next-auth";
-import { Providers } from "@/app/providers";
+import Link from "next/link";
 
-type UserData = {
+type AccountDropdownProps = {
 	name: string | null | undefined;
-	role: UserRole;
-	email: string | null | undefined;
-	image?: any;
-	id: string | number;
+	role: UserRole | null | undefined;
 };
 
-const AccountDropdown = () => {
-	const session = async () => await getServerSession(authOptions);
-	console.log(session);
-	// const name = session?.user.name;
-	let name = true;
-	//stackoverflow.com/questions/70429561/how-do-i-use-next-auth-within-a-nextjs-component
+const AccountDropdown = ({ name, role }: AccountDropdownProps) => {
 	https: return (
-		<div className="flex items-center mr-4 hover:cursor-pointer">
-			<Providers>
-				<DropdownMenu>
-					<DropdownMenuTrigger className="flex gap-2">
-						<PersonIcon className="w-6 h-6" />
-						<div className="h-full sm:flex hidden ">
-							{name ? <div>{name}</div> : <div>Your Account</div>}
-						</div>
-					</DropdownMenuTrigger>
-					{name && (
-						<DropdownMenuContent>
+		<div className="flex items-center mr-8 hover:cursor-pointer">
+			<DropdownMenu>
+				<DropdownMenuTrigger className="flex gap-2">
+					<PersonIcon className="w-6 h-6" />
+					<div className="h-full sm:flex hidden ">
+						{name ? <div>{name}</div> : <div>Your Account</div>}
+					</div>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent className="flex flex-col items-center">
+					{name ? (
+						<>
 							<DropdownMenuLabel>Account</DropdownMenuLabel>
-
 							<DropdownMenuSeparator />
-							<DropdownMenuItem>Profile</DropdownMenuItem>
-							<DropdownMenuItem>Billing</DropdownMenuItem>
-							<DropdownMenuItem>Team</DropdownMenuItem>
-							<DropdownMenuItem>Subscription</DropdownMenuItem>
-							<LogoutButton />
-						</DropdownMenuContent>
+							<DropdownMenuItem>
+								{role === "ADMIN" && (
+									<Link href="/dashboard/admin">
+										Dashboard
+									</Link>
+								)}
+								{role === "STAFF" && (
+									<Link href="/dashboard/staff">
+										Dashboard
+									</Link>
+								)}
+								{role === "CUSTOMER" && (
+									<Link href="/dashboard/customer">
+										Dashboard
+									</Link>
+								)}
+							</DropdownMenuItem>
+							<DropdownMenuItem>
+								<Link href="/settings">Settings</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem>
+								<LogoutButton />
+							</DropdownMenuItem>
+						</>
+					) : (
+						<>
+							<DropdownMenuItem>
+								<LoginButton />
+							</DropdownMenuItem>
+						</>
 					)}
-					{!name && (
-						<DropdownMenuLabel>
-							<LoginButton />
-						</DropdownMenuLabel>
-					)}
-				</DropdownMenu>
-			</Providers>
+				</DropdownMenuContent>
+			</DropdownMenu>
 		</div>
 	);
 };
