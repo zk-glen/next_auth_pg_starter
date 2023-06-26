@@ -9,12 +9,35 @@ export default async function middleware(
 	const token = await getToken({ req });
 	const isAuthenticated = !!token;
 
-	if (
-		(req.nextUrl.pathname.startsWith("/login") ||
-			req.nextUrl.pathname.startsWith("/register")) &&
-		isAuthenticated
-	) {
-		return NextResponse.redirect(new URL("/dashboard", req.url));
+	// Check if the user is authenticated
+	if (!isAuthenticated) {
+		return NextResponse.redirect(new URL("/login", req.url));
+	}
+
+	// Check user roles and restrict access based on role
+	const { role } = token;
+	let allowedRoutes: string[] = [];
+
+	switch (role) {
+		case "ADMIN":
+			allowedRoutes = ["/dashboard/admin"];
+			break;
+		case "STAFF":
+			allowedRoutes = ["/dashboard/staff"];
+			break;
+		case "CUSTOMER":
+			allowedRoutes = ["/dashboard/customer"];
+			break;
+		default:
+			break;
+	}
+
+	const isAuthorized = allowedRoutes.some((route: string) =>
+		req.nextUrl.pathname.startsWith(route)
+	);
+
+	if (!isAuthorized) {
+		return NextResponse.redirect(new URL("/unauthorized", req.url));
 	}
 
 	const authMiddleware = await withAuth({

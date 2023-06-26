@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { compare } from "bcrypt";
 import NextAuth, { type NextAuthOptions } from "next-auth";
-// import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 if (!process.env.NEXTAUTH_SECRET) {

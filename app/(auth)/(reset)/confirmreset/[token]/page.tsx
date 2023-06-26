@@ -18,9 +18,7 @@ export default function ChangePassword() {
 		const token = getNextURL.split("/")[2];
 
 		const newPassword = await hash(data.get("password") as string, 12);
-		// const newPassword = data.get("password") as string;
 
-		// if (token) throw new Error("No Token");
 		//  Find use in db that is not active yet, and is created less than 24 hours ago
 		const user = await prisma.user.findFirst({
 			where: {
